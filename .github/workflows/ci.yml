@@ -8,28 +8,24 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Baixar código
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Instalar Go
+      - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.25'
 
-      - name: Executar testes
+      - name: Run tests
         run: go test ./...
 
-
   build:
-  needs: test
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  runs-on: ubuntu-latest
-
-  steps:
-    - name: Baixar código
-      uses: actions/checkout@v4
-
-    - name: Build Docker
-      run: docker build -t ci-cd-pipeline .
+      - name: Build Docker
+        run: docker build -t ci-cd-pipeline .
